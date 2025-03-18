@@ -1,15 +1,13 @@
 RewriteEngine On
+RewriteBase /
 
-# Ensure the request is not for an existing file or directory
+# Handle API requests (starting with /api/)
+RewriteRule ^api/(.*)$ index.php [QSA,L]
+RewriteRule ^api/?$ index.php [QSA,L]
+
+# Handle existing static files and directories (for your front-end)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Route all API requests to their respective subfolder's index.php
-RewriteRule ^api/([^/]+)/?$ api/$1/index.php [L,QSA]
-
-# Enable CORS (Fixes frontend access issues)
-<IfModule mod_headers.c>
-    Header always set Access-Control-Allow-Origin "*"
-    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-    Header always set Access-Control-Allow-Headers "Origin, Accept, Content-Type, X-Requested-With"
-</IfModule>
+# Route everything else to the root index.php (your front-end)
+RewriteRule ^ index.php [QSA,L]
