@@ -5,7 +5,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 # Redirect API requests correctly
-RewriteRule ^api/(.*)$ api/$1.php [L]
+RewriteRule ^api/([^/.]+)$ api/$1/index.php [L,QSA]
 
 # Enable CORS Headers (Fixes frontend issues)
 <IfModule mod_headers.c>
