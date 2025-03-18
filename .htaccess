@@ -1,0 +1,16 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Allow API calls without .php extension
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/(.*)$ api/$1.php [L]
+
+# Allow access to the API endpoints
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Origin, Accept, Content-Type, X-Requested-With"
+
+# Handle preflight requests (OPTIONS method)
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule .* /api/options.php [R=200,L]
