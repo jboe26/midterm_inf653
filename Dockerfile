@@ -1,11 +1,13 @@
 # Use official PHP image with Apache
 FROM php:8.1-apache
 
-# Enable required PHP extensions
-RUN docker-php-ext-install pdo pdo_pgsql
+# Install system dependencies for PostgreSQL
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 
-# Enable mod_rewrite for Apache (for clean URLs)
-RUN a2enmod rewrite
+# Enable Apache modules (mod_rewrite & mod_headers)
+RUN a2enmod rewrite headers
 
 # Copy project files to Apache root directory
 COPY . /var/www/html/
